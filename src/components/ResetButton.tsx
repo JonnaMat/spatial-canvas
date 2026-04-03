@@ -17,9 +17,9 @@ export function ResetButton() {
   return (
     <button
       onClick={reset}
-      className="fixed bottom-6 right-6 px-4 py-2 bg-gray-800 text-white text-sm rounded-lg
-        hover:bg-gray-700 transition-colors shadow-lg z-[9999]
-        disabled:opacity-50 disabled:cursor-not-allowed"
+      className="fixed bottom-6 right-6 px-4 py-2 bg-dracula-purple text-dracula-bg font-medium text-sm rounded-lg
+        hover:bg-dracula-pink transition-colors shadow-lg z-[9999]
+        disabled:opacity-50 disabled:cursor-not-allowed border border-dracula-purple/50"
       disabled={spaceHeld}
       title="Reset layout (Esc)"
     >

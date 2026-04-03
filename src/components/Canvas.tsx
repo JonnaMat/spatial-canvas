@@ -63,18 +63,12 @@ export function Canvas() {
   )?.id;
 
   return (
-    <div className="w-screen h-screen overflow-hidden bg-gray-50">
+    <div className="w-screen h-screen overflow-hidden bg-dracula-bg">
       <div
         ref={canvasRef}
-        className={`absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 ${
+        className={`absolute inset-0 bg-dracula-bg-dark canvas-grid ${
           spaceHeld ? 'cursor-grab active:cursor-grabbing' : ''
         }`}
-        style={{
-          backgroundImage: `
-            radial-gradient(circle, #d1d5db 1px, transparent 1px)
-          `,
-          backgroundSize: '24px 24px',
-        }}
         onMouseDown={handleCanvasMouseDown}
         onMouseMove={handleCanvasMouseMove}
         onMouseUp={handleCanvasMouseUp}
@@ -98,12 +92,9 @@ export function Canvas() {
         </div>
       </div>
 
-      <div className="fixed top-4 left-4 bg-white/80 backdrop-blur-sm px-3 py-2 rounded-lg shadow-md">
-        <p className="text-xs text-gray-600">
-          <kbd className="px-1.5 py-0.5 bg-gray-100 rounded text-gray-800 font-medium">
-            Space
-          </kbd>{' '}
-          + drag to pan
+      <div className="fixed top-4 left-4 bg-dracula-bg-light/80 backdrop-blur-sm px-3 py-2 rounded-lg shadow-lg border border-dracula-comment/30">
+        <p className="text-xs text-dracula-foreground/80">
+          <kbd className="kbd-key">Space</kbd> + drag to pan
         </p>
       </div>
 

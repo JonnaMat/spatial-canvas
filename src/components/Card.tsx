@@ -51,17 +51,21 @@ export function Card({ card, canvasRef, isDraggingAnother }: CardProps) {
   );
 
   const shadowClass = isDragging
-    ? 'shadow-2xl shadow-gray-900/50'
+    ? 'card-shadow-drag'
     : isHovered
-    ? 'shadow-xl shadow-gray-900/30'
-    : 'shadow-md shadow-gray-900/20';
+    ? 'card-shadow-hover'
+    : 'card-shadow-base';
 
   const scaleClass = isDragging ? 'scale-105' : isHovered ? 'scale-102' : '';
 
+  const badgeClass = card.type === 'demo'
+    ? 'bg-dracula-purple/20 text-dracula-purple border border-dracula-purple/40'
+    : 'bg-dracula-cyan/20 text-dracula-cyan border border-dracula-cyan/40';
+
   return (
     <div
-      className={`absolute w-72 bg-white rounded-lg p-4 cursor-pointer select-none
-        transition-all duration-150 ease-out will-change-transform
+      className={`absolute w-72 bg-dracula-bg rounded-lg p-4 cursor-pointer select-none
+        transition-all duration-150 ease-out will-change-transform border border-dracula-bg-light
         ${shadowClass} ${scaleClass}`}
       style={{
         left: currentPos.x,
@@ -74,24 +78,20 @@ export function Card({ card, canvasRef, isDraggingAnother }: CardProps) {
       onClick={handleClick}
     >
       <div className="flex items-start justify-between gap-2 mb-2">
-        <h3 className="font-semibold text-gray-900 text-sm leading-tight">
+        <h3 className="font-semibold text-dracula-foreground text-sm leading-tight">
           {card.title}
         </h3>
         <span
-          className={`shrink-0 px-2 py-0.5 text-xs rounded-full ${
-            card.type === 'demo'
-              ? 'bg-purple-100 text-purple-700'
-              : 'bg-blue-100 text-blue-700'
-          }`}
+          className={`shrink-0 px-2 py-0.5 text-xs rounded-full ${badgeClass}`}
         >
           {card.type === 'demo' ? 'Demo' : 'Article'}
         </span>
       </div>
-      <p className="text-xs text-gray-600 leading-relaxed line-clamp-3">
+      <p className="text-xs text-dracula-foreground/70 leading-relaxed line-clamp-3">
         {card.description}
       </p>
-      <div className="mt-3 pt-2 border-t border-gray-100">
-        <span className="text-xs text-blue-600 hover:text-blue-800">
+      <div className="mt-3 pt-2 border-t border-dracula-bg-light">
+        <span className="text-xs text-dracula-cyan hover:text-dracula-green transition-colors">
           Read more →
         </span>
       </div>
