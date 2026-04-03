@@ -1,6 +1,11 @@
 <div align="center">
   <h1 style="font-size: 28px; margin: 10px 0;">Spatial Canvas</h1>
   <p>A draggable, pannable canvas for organizing content as overlapping cards. Perfect for bibliographies, knowledge management, and visual tracking.</p>
+  <p>
+    <a href="https://jonnamat.github.io/spatial-canvas/">
+      <img alt="Live Demo" src="https://img.shields.io/badge/Live%20Demo-View%20Site-green?style=for-the-badge" />
+    </a>
+  </p>
 </div>
 
 <p align="center">
