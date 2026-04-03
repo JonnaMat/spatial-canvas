@@ -70,10 +70,10 @@ You are free to:
 - **Share** with others
 
 You must:
-- **Credit** Jonna as the original author
+- **Credit** Jonna Matthiesen as the original author
 
 See [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/) for details.
 
 ---
 
-Built with care by [Jonna](#)
+Built with care by [Jonna Matthiesen](https://www.linkedin.com/in/jonna-matthiesen-920243221/)
