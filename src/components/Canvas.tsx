@@ -5,7 +5,7 @@ import { ResetButton } from './ResetButton';
 
 export function Canvas() {
   const canvasRef = useRef<HTMLDivElement>(null);
-  const { cards, viewport, loadFromCookie, pan } = useCanvasStore();
+  const { cards, viewport, loadFromCookie, pan, draggedCardId } = useCanvasStore();
   const isPanning = useRef(false);
   const lastPos = useRef({ x: 0, y: 0 });
 
@@ -42,10 +42,6 @@ export function Canvas() {
     e.preventDefault();
   };
 
-  const draggedCardId = cards.find(
-    (c) => c.zIndex === Math.max(...cards.map((card) => card.zIndex))
-  )?.id;
-
   return (
     <div className="w-screen h-screen overflow-hidden bg-dracula-bg">
       <div
@@ -66,7 +62,7 @@ export function Canvas() {
             <Card
               key={card.id}
               card={card}
-              isDraggingAnother={draggedCardId !== card.id && !!draggedCardId}
+              isDraggingAnother={!!draggedCardId && draggedCardId !== card.id}
             />
           ))}
         </div>

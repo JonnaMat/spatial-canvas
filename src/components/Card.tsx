@@ -1,6 +1,7 @@
-import { useRef, useState, useEffect, useCallback } from 'react';
+import { useRef, useCallback } from 'react';
 import { CardData } from '../data/initialCards';
 import { useCardDrag } from '../hooks/useCardDrag';
+import { useCanvasStore } from '../store/canvasStore';
 
 interface CardProps {
   card: CardData;
@@ -8,32 +9,23 @@ interface CardProps {
 }
 
 export function Card({ card, isDraggingAnother }: CardProps) {
-  const [isHovered, setIsHovered] = useState(false);
   const hoverTimeout = useRef<number | null>(null);
   const { isDragging, hasMoved, handleMouseDown, currentPos } = useCardDrag(
     card.id
   );
+  const bringToFront = useCanvasStore((s) => s.bringToFront);
 
   const handleMouseEnter = useCallback(() => {
     hoverTimeout.current = window.setTimeout(() => {
-      setIsHovered(true);
+      bringToFront(card.id);
     }, 150);
-  }, []);
+  }, [card.id, bringToFront]);
 
   const handleMouseLeave = useCallback(() => {
     if (hoverTimeout.current) {
       clearTimeout(hoverTimeout.current);
       hoverTimeout.current = null;
     }
-    setIsHovered(false);
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      if (hoverTimeout.current) {
-        clearTimeout(hoverTimeout.current);
-      }
-    };
   }, []);
 
   const handleClick = useCallback(
@@ -46,14 +38,6 @@ export function Card({ card, isDraggingAnother }: CardProps) {
     [hasMoved]
   );
 
-  const shadowClass = isDragging
-    ? 'card-shadow-drag'
-    : isHovered
-    ? 'card-shadow-hover'
-    : 'card-shadow-base';
-
-  const scaleClass = isDragging ? 'scale-105' : isHovered ? 'scale-102' : '';
-
   const badgeClass = card.type === 'demo'
     ? 'bg-dracula-purple/20 text-dracula-purple border border-dracula-purple/40'
     : 'bg-dracula-cyan/20 text-dracula-cyan border border-dracula-cyan/40';
@@ -61,15 +45,16 @@ export function Card({ card, isDraggingAnother }: CardProps) {
   return (
     <div
       className={`absolute w-72 bg-dracula-bg rounded-lg p-4 cursor-pointer select-none
-        transition-[box-shadow,transform] duration-150 ease-out will-change-transform border border-dracula-bg-light
-        ${shadowClass} ${scaleClass}`}
+        will-change-transform border border-dracula-bg-light
+        ${isDragging ? 'card-shadow-drag scale-105' : 'card-shadow-base'}
+        hover:card-shadow-hover hover:scale-102`}
       style={{
         transform: `translate(${currentPos.x}px, ${currentPos.y}px)`,
         zIndex: card.zIndex,
       }}
       onMouseDown={handleMouseDown}
       onMouseEnter={!isDraggingAnother ? handleMouseEnter : undefined}
-      onMouseLeave={handleMouseLeave}
+      onMouseLeave={!isDraggingAnother ? handleMouseLeave : undefined}
       onClick={handleClick}
     >
       <div className="flex items-start justify-between gap-2 mb-2">
