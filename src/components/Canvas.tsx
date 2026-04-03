@@ -75,7 +75,7 @@ export function Canvas() {
       </div>
 
       <div className="fixed bottom-4 left-4 text-xs text-dracula-comment/60">
-        by Jonna
+        by Jonna Matthiesen
       </div>
 
       <ResetButton />

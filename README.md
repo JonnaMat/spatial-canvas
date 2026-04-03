@@ -18,7 +18,7 @@
   </a>
 </p>
 
----
+
 
 ## ✨ What is this?
 
@@ -30,7 +30,7 @@ A spatial canvas is a **drag-and-drop workspace** where content lives as overlap
 - **Non-linear exploration** — Follow your intuition, not a rigid list
 - **Persistent memory** — Your arrangement saves automatically, so you can pick up where you left off
 
----
+
 
 ## 🎯 Features
 
@@ -43,7 +43,7 @@ A spatial canvas is a **drag-and-drop workspace** where content lives as overlap
 | **Dark Theme** | Dracula-inspired palette for comfortable reading |
 | **GitHub Pages Ready** | Deploy with one build command |
 
----
+
 
 ## 🚀 Quick Start
 
@@ -64,7 +64,7 @@ A spatial canvas is a **drag-and-drop workspace** where content lives as overlap
    npm run dev
    ```
 
----
+
 
 ## 🌐 Deploy to GitHub Pages
 
@@ -72,9 +72,9 @@ A spatial canvas is a **drag-and-drop workspace** where content lives as overlap
 
 1. Go to your repository **Settings → Pages**
 2. Under "Build and deployment", select **Source: GitHub Actions**
-3. Push to `main` — GitHub automatically builds and deploys!
+3. Push to `master` — GitHub automatically builds and deploys!
 
-That's it. Every push to `main` triggers a deployment.
+That's it. Every push to `master` triggers a deployment.
 
 ### Manual
 
@@ -84,9 +84,9 @@ npm run build
 
 Then in GitHub Settings → Pages:
 - Source: Deploy from a branch
-- Branch: `main` / `dist` folder
+- Branch: `master` / `dist` folder
 
----
+
 
 ### Local Development
 
@@ -101,7 +101,7 @@ npm run dev
 npm run build
 ```
 
----
+
 
 ## 📝 Customization
 
@@ -130,26 +130,26 @@ Colors are defined in `tailwind.config.js` under the `dracula` key. Modify the h
 
 The canvas bounds are set in `src/components/Canvas.tsx`. Update the `w-[1400px] h-[900px]` classes to fit your content.
 
----
+
 
 ## 🏗️ Tech Stack
 
-| Technology | Purpose |
-|------------|---------|
-| [React](https://react.dev/) | UI framework |
-| [Zustand](https://zustand-demo.pmnd.rs/) | Lightweight state management |
-| [Tailwind CSS](https://tailwindcss.com/) | Utility-first styling |
-| [Vite](https://vitejs.dev/) | Fast build tool |
-| [TypeScript](https://www.typescriptlang.org/) | Type safety |
+| Technology                                    | Purpose                      |
+|-----------------------------------------------|------------------------------|
+| [React](https://react.dev/)                   | UI framework                 |
+| [Zustand](https://zustand-demo.pmnd.rs/)      | Lightweight state management |
+| [Tailwind CSS](https://tailwindcss.com/)      | Utility-first styling        |
+| [Vite](https://vitejs.dev/)                   | Fast build tool              |
+| [TypeScript](https://www.typescriptlang.org/) | Type safety                  |
 
----
+
 
 ## 📁 Project Structure
 
 ```
 src/
 ├── components/
-│   ├── Canvas.tsx       # Main canvas with pan/drag handling
+│   ├── Canvas.tsx      # Main canvas with pan/drag handling
 │   ├── Card.tsx        # Draggable card
 │   └── ResetButton.tsx # Restore default layout
 ├── store/
@@ -161,7 +161,7 @@ src/
 └── index.css           # Tailwind + custom styles
 ```
 
----
+
 
 ## 🤝 Contributing
 
@@ -173,7 +173,7 @@ Contributions welcome! Whether it's fixing bugs, adding features, or improving d
 4. Commit with a clear message
 5. Open a pull request
 
----
+
 
 ## 📄 License
 
@@ -189,7 +189,7 @@ This project is available under **CC BY 4.0** (Creative Commons Attribution 4.0)
 
 See [creativecommons.org/licenses/by/4.0](https://creativecommons.org/licenses/by/4.0/) for details.
 
----
+
 
 ## 🙏 Acknowledgements
 
