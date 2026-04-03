@@ -10,7 +10,6 @@ interface CanvasStore {
   viewport: { offsetX: number; offsetY: number };
   draggedCardId: string | null;
   maxZIndex: number;
-  spaceHeld: boolean;
   loadFromCookie: () => void;
   saveToCookie: () => void;
   clearCookie: () => void;
@@ -18,7 +17,6 @@ interface CanvasStore {
   updateCardPosition: (cardId: string, x: number, y: number) => void;
   finalizeDrag: (cardId: string) => void;
   setDragging: (cardId: string | null) => void;
-  setSpaceHeld: (held: boolean) => void;
   pan: (deltaX: number, deltaY: number) => void;
   reset: () => void;
 }
@@ -40,7 +38,6 @@ export const useCanvasStore = create<CanvasStore>((set, get) => ({
   viewport: DEFAULT_VIEWPORT,
   draggedCardId: null,
   maxZIndex: 1,
-  spaceHeld: false,
 
   loadFromCookie: () => {
     const savedCards = loadCardsFromCookie();
@@ -86,10 +83,6 @@ export const useCanvasStore = create<CanvasStore>((set, get) => ({
 
   setDragging: (cardId: string | null) => {
     set({ draggedCardId: cardId });
-  },
-
-  setSpaceHeld: (held: boolean) => {
-    set({ spaceHeld: held });
   },
 
   pan: (deltaX: number, deltaY: number) => {

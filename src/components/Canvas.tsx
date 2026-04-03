@@ -14,21 +14,6 @@ export function Canvas() {
   }, [loadFromCookie]);
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.code === 'Space' && !e.repeat) {
-        e.preventDefault();
-        useCanvasStore.getState().setSpaceHeld(true);
-      }
-    };
-
-    const handleKeyUp = (e: KeyboardEvent) => {
-      if (e.code === 'Space') {
-        e.preventDefault();
-        useCanvasStore.getState().setSpaceHeld(false);
-        isPanning.current = false;
-      }
-    };
-
     const handleMouseMove = (e: MouseEvent) => {
       if (isPanning.current) {
         const deltaX = e.clientX - lastPos.current.x;
@@ -42,14 +27,10 @@ export function Canvas() {
       isPanning.current = false;
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseup', handleMouseUp);
 
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
     };
@@ -93,7 +74,7 @@ export function Canvas() {
 
       <div className="fixed top-4 left-4 bg-dracula-bg-light/80 backdrop-blur-sm px-3 py-2 rounded-lg shadow-lg border border-dracula-comment/30">
         <p className="text-xs text-dracula-foreground/80">
-          Drag canvas or <kbd className="kbd-key">Space</kbd> + drag to pan
+          Drag canvas to pan
         </p>
       </div>
 
