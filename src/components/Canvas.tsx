@@ -75,7 +75,7 @@ export function Canvas() {
       </div>
 
       <div className="fixed bottom-4 left-4 text-xs text-dracula-comment/60">
-        by Jonna Matthiesen
+        © 2026 Jonna Matthiesen — <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer" className="underline hover:text-dracula-foreground/80">CC BY 4.0</a>
       </div>
 
       <ResetButton />
