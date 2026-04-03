@@ -5,7 +5,7 @@ import { ResetButton } from './ResetButton';
 
 export function Canvas() {
   const canvasRef = useRef<HTMLDivElement>(null);
-  const { cards, viewport, spaceHeld, loadFromCookie, pan } = useCanvasStore();
+  const { cards, viewport, loadFromCookie, pan } = useCanvasStore();
   const isPanning = useRef(false);
   const lastPos = useRef({ x: 0, y: 0 });
 
@@ -29,33 +29,36 @@ export function Canvas() {
       }
     };
 
+    const handleMouseMove = (e: MouseEvent) => {
+      if (isPanning.current) {
+        const deltaX = e.clientX - lastPos.current.x;
+        const deltaY = e.clientY - lastPos.current.y;
+        lastPos.current = { x: e.clientX, y: e.clientY };
+        pan(-deltaX, -deltaY);
+      }
+    };
+
+    const handleMouseUp = () => {
+      isPanning.current = false;
+    };
+
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
     };
-  }, []);
+  }, [pan]);
 
   const handleCanvasMouseDown = (e: React.MouseEvent) => {
-    if (e.target === canvasRef.current || spaceHeld) {
-      isPanning.current = true;
-      lastPos.current = { x: e.clientX, y: e.clientY };
-      e.preventDefault();
-    }
-  };
-
-  const handleCanvasMouseMove = (e: React.MouseEvent) => {
-    if (isPanning.current) {
-      const deltaX = e.clientX - lastPos.current.x;
-      const deltaY = e.clientY - lastPos.current.y;
-      lastPos.current = { x: e.clientX, y: e.clientY };
-      pan(-deltaX, -deltaY);
-    }
-  };
-
-  const handleCanvasMouseUp = () => {
-    isPanning.current = false;
+    isPanning.current = true;
+    lastPos.current = { x: e.clientX, y: e.clientY };
+    e.preventDefault();
   };
 
   const draggedCardId = cards.find(
@@ -67,12 +70,9 @@ export function Canvas() {
       <div
         ref={canvasRef}
         className={`absolute inset-0 bg-dracula-bg-dark canvas-grid ${
-          spaceHeld ? 'cursor-grab active:cursor-grabbing' : ''
+          isPanning.current ? 'cursor-grabbing' : 'cursor-grab'
         }`}
         onMouseDown={handleCanvasMouseDown}
-        onMouseMove={handleCanvasMouseMove}
-        onMouseUp={handleCanvasMouseUp}
-        onMouseLeave={handleCanvasMouseUp}
       >
         <div
           className="relative w-[1400px] h-[900px]"
@@ -94,7 +94,7 @@ export function Canvas() {
 
       <div className="fixed top-4 left-4 bg-dracula-bg-light/80 backdrop-blur-sm px-3 py-2 rounded-lg shadow-lg border border-dracula-comment/30">
         <p className="text-xs text-dracula-foreground/80">
-          <kbd className="kbd-key">Space</kbd> + drag to pan
+          Drag canvas or <kbd className="kbd-key">Space</kbd> + drag to pan
         </p>
       </div>
 
