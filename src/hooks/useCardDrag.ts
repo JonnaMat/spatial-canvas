@@ -3,86 +3,73 @@ import { useCanvasStore } from '../store/canvasStore';
 
 const DRAG_THRESHOLD = 5;
 
-export function useCardDrag(
-  cardId: string,
-  initialX: number,
-  initialY: number,
-  canvasRef: React.RefObject<HTMLDivElement | null>
-) {
+export function useCardDrag(cardId: string) {
   const [isDragging, setIsDragging] = useState(false);
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-  const [currentPos, setCurrentPos] = useState({ x: initialX, y: initialY });
-  const startPos = useRef({ x: 0, y: 0 });
+  const [visualPos, setVisualPos] = useState({ x: 0, y: 0 });
   const hasMoved = useRef(false);
+  const startOffset = useRef({ x: 0, y: 0 });
 
+  const card = useCanvasStore((s) => s.cards.find((c) => c.id === cardId));
   const { updateCardPosition, finalizeDrag, setDragging, bringToFront } =
     useCanvasStore();
 
   const handleMouseDown = useCallback(
     (e: React.MouseEvent) => {
-      if (e.button !== 0) return;
+      if (e.button !== 0 || !card) return;
       e.stopPropagation();
       e.preventDefault();
 
-      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-      const offsetX = e.clientX - rect.left;
-      const offsetY = e.clientY - rect.top;
-
-      startPos.current = { x: e.clientX, y: e.clientY };
+      startOffset.current = {
+        x: e.clientX - card.x,
+        y: e.clientY - card.y,
+      };
       hasMoved.current = false;
-      setDragOffset({ x: offsetX, y: offsetY });
-      setCurrentPos({ x: initialX, y: initialY });
+      setVisualPos({ x: card.x, y: card.y });
       setIsDragging(true);
       setDragging(cardId);
       bringToFront(cardId);
     },
-    [cardId, initialX, initialY, setDragging, bringToFront]
+    [card, cardId, setDragging, bringToFront]
   );
-
-  const handleMouseMove = useCallback(
-    (e: MouseEvent) => {
-      if (!isDragging) return;
-
-      const deltaX = e.clientX - startPos.current.x;
-      const deltaY = e.clientY - startPos.current.y;
-
-      if (!hasMoved.current && (Math.abs(deltaX) > DRAG_THRESHOLD || Math.abs(deltaY) > DRAG_THRESHOLD)) {
-        hasMoved.current = true;
-      }
-
-      if (hasMoved.current && canvasRef.current) {
-        const canvasRect = canvasRef.current.getBoundingClientRect();
-        const newX = e.clientX - canvasRect.left - dragOffset.x;
-        const newY = e.clientY - canvasRect.top - dragOffset.y;
-        setCurrentPos({ x: newX, y: newY });
-        updateCardPosition(cardId, newX, newY);
-      }
-    },
-    [isDragging, cardId, dragOffset, canvasRef, updateCardPosition]
-  );
-
-  const handleMouseUp = useCallback(() => {
-    if (isDragging) {
-      setIsDragging(false);
-      setDragging(null);
-      if (hasMoved.current) {
-        finalizeDrag(cardId);
-      }
-    }
-  }, [isDragging, cardId, setDragging, finalizeDrag]);
 
   useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isDragging) return;
+
+      const newX = e.clientX - startOffset.current.x;
+      const newY = e.clientY - startOffset.current.y;
+      setVisualPos({ x: newX, y: newY });
+
+      if (
+        !hasMoved.current &&
+        card &&
+        (Math.abs(newX - card.x) > DRAG_THRESHOLD ||
+          Math.abs(newY - card.y) > DRAG_THRESHOLD)
+      ) {
+        hasMoved.current = true;
+      }
+    };
+
+    const handleMouseUp = () => {
+      if (isDragging) {
+        if (hasMoved.current) {
+          updateCardPosition(cardId, visualPos.x, visualPos.y);
+          finalizeDrag(cardId);
+        }
+        setIsDragging(false);
+        setDragging(null);
+      }
+    };
+
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseup', handleMouseUp);
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [handleMouseMove, handleMouseUp]);
+  }, [isDragging, card, cardId, visualPos, setDragging, updateCardPosition, finalizeDrag]);
 
-  useEffect(() => {
-    setCurrentPos({ x: initialX, y: initialY });
-  }, [initialX, initialY]);
+  const currentPos = isDragging ? visualPos : { x: card?.x ?? 0, y: card?.y ?? 0 };
 
   return {
     isDragging,

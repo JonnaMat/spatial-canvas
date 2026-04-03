@@ -4,18 +4,14 @@ import { useCardDrag } from '../hooks/useCardDrag';
 
 interface CardProps {
   card: CardData;
-  canvasRef: React.RefObject<HTMLDivElement | null>;
   isDraggingAnother: boolean;
 }
 
-export function Card({ card, canvasRef, isDraggingAnother }: CardProps) {
+export function Card({ card, isDraggingAnother }: CardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const hoverTimeout = useRef<number | null>(null);
   const { isDragging, hasMoved, handleMouseDown, currentPos } = useCardDrag(
-    card.id,
-    card.x,
-    card.y,
-    canvasRef
+    card.id
   );
 
   const handleMouseEnter = useCallback(() => {
@@ -65,11 +61,10 @@ export function Card({ card, canvasRef, isDraggingAnother }: CardProps) {
   return (
     <div
       className={`absolute w-72 bg-dracula-bg rounded-lg p-4 cursor-pointer select-none
-        transition-all duration-150 ease-out will-change-transform border border-dracula-bg-light
+        transition-[box-shadow,transform] duration-150 ease-out will-change-transform border border-dracula-bg-light
         ${shadowClass} ${scaleClass}`}
       style={{
-        left: currentPos.x,
-        top: currentPos.y,
+        transform: `translate(${currentPos.x}px, ${currentPos.y}px)`,
         zIndex: card.zIndex,
       }}
       onMouseDown={handleMouseDown}

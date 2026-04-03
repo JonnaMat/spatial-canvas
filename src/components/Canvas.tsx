@@ -34,7 +34,7 @@ export function Canvas() {
         const deltaX = e.clientX - lastPos.current.x;
         const deltaY = e.clientY - lastPos.current.y;
         lastPos.current = { x: e.clientX, y: e.clientY };
-        pan(-deltaX, -deltaY);
+        pan(deltaX, deltaY);
       }
     };
 
@@ -85,7 +85,6 @@ export function Canvas() {
             <Card
               key={card.id}
               card={card}
-              canvasRef={canvasRef}
               isDraggingAnother={draggedCardId !== card.id && !!draggedCardId}
             />
           ))}
