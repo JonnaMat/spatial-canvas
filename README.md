@@ -63,11 +63,43 @@ A spatial canvas is a **drag-and-drop workspace** where content lives as overlap
    ```bash
    npm run dev
    ```
-5. Deploy to GitHub Pages:
-   ```bash
-   npm run build
-   ```
-   Then enable GitHub Pages in your repo settings, pointing to the `dist/` folder.
+
+---
+
+## 🌐 Deploy to GitHub Pages
+
+### Automatic (Recommended)
+
+1. Go to your repository **Settings → Pages**
+2. Under "Build and deployment", select **Source: GitHub Actions**
+3. Push to `main` — GitHub automatically builds and deploys!
+
+That's it. Every push to `main` triggers a deployment.
+
+### Manual
+
+```bash
+npm run build
+```
+
+Then in GitHub Settings → Pages:
+- Source: Deploy from a branch
+- Branch: `main` / `dist` folder
+
+---
+
+### Local Development
+
+```bash
+npm install
+npm run dev
+```
+
+### Build for Production
+
+```bash
+npm run build
+```
 
 ---
 
