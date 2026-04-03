@@ -2,7 +2,7 @@ import Cookies from 'js-cookie';
 import { create } from 'zustand';
 import { CardData, DEFAULT_CARDS, DEFAULT_VIEWPORT, MAX_Z_INDEX } from '../data/initialCards';
 
-const COOKIE_KEY = 'research-canvas-layout';
+const COOKIE_KEY = 'spatial-canvas-layout';
 const COOKIE_EXPIRY = 30;
 
 interface CanvasStore {

@@ -1,6 +1,6 @@
 <div align="center">
-  <h1 style="font-size: 28px; margin: 10px 0;">Spatial Research Canvas</h1>
-  <p>A draggable, pannable canvas for organizing research content as overlapping cards. Perfect for bibliographies, knowledge management, and visual research tracking.</p>
+  <h1 style="font-size: 28px; margin: 10px 0;">Spatial Canvas</h1>
+  <p>A draggable, pannable canvas for organizing content as overlapping cards. Perfect for bibliographies, knowledge management, and visual tracking.</p>
 </div>
 
 <p align="center">
@@ -22,12 +22,12 @@
 
 ## ✨ What is this?
 
-A spatial research canvas is a **drag-and-drop workspace** where research content lives as overlapping cards. Instead of a linear list, you arrange papers, articles, and demos spatially—like pinning notes to a physical board, but digital.
+A spatial canvas is a **drag-and-drop workspace** where content lives as overlapping cards. Instead of a linear list, you arrange papers, articles, and demos spatially—like pinning notes to a physical board, but digital.
 
 **Why spatial?**
 
-- **Visual clustering** — Group related research by topic or theme
-- **Non-linear exploration** — Follow your research intuition, not a rigid list
+- **Visual clustering** — Group related cards by topic or theme
+- **Non-linear exploration** — Follow your intuition, not a rigid list
 - **Persistent memory** — Your arrangement saves automatically, so you can pick up where you left off
 
 ---
@@ -37,7 +37,7 @@ A spatial research canvas is a **drag-and-drop workspace** where research conten
 | Feature | Description |
 |---------|-------------|
 | **Draggable Cards** | Grab any card and move it anywhere on the canvas |
-| **Pan Navigation** | Drag the background to explore your research space |
+| **Pan Navigation** | Drag the background to explore your space |
 | **Auto Z-Index** | Hover over a card for 150ms to bring it to front |
 | **Persistent Layout** | Your arrangement is saved to cookies automatically |
 | **Dark Theme** | Dracula-inspired palette for comfortable reading |
@@ -52,8 +52,8 @@ A spatial research canvas is a **drag-and-drop workspace** where research conten
 1. Click **"Use this template"** on GitHub
 2. Clone your new repository:
    ```bash
-   git clone https://github.com/your-username/spatial-research-canvas.git
-   cd spatial-research-canvas
+   git clone https://github.com/your-username/spatial-canvas.git
+   cd spatial-canvas
    ```
 3. Install dependencies:
    ```bash
@@ -118,7 +118,7 @@ The canvas bounds are set in `src/components/Canvas.tsx`. Update the `w-[1400px]
 src/
 ├── components/
 │   ├── Canvas.tsx       # Main canvas with pan/drag handling
-│   ├── Card.tsx        # Draggable research card
+│   ├── Card.tsx        # Draggable card
 │   └── ResetButton.tsx # Restore default layout
 ├── store/
 │   └── canvasStore.ts  # Zustand store + cookie persistence
