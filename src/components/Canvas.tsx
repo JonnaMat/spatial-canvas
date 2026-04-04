@@ -45,15 +45,15 @@ export function Canvas() {
 
   return (
     <div className="w-screen h-screen overflow-hidden bg-dracula-bg">
-      <div
-        ref={canvasRef}
-        className={`absolute inset-0 bg-dracula-bg-dark ${
-          isPanning.current ? 'cursor-grabbing' : 'cursor-grab'
-        }`}
-        onMouseDown={handleCanvasMouseDown}
-      >
         <div
-          className="relative w-[1400px] h-[900px] canvas-grid"
+          ref={canvasRef}
+          className={`absolute inset-0 canvas-grid bg-dracula-bg-dark ${
+            isPanning.current ? 'cursor-grabbing' : 'cursor-grab'
+          }`}
+          onMouseDown={handleCanvasMouseDown}
+        >
+          <div
+            className="relative w-[1400px] h-[900px]"
           style={{
             transform: `translate(${viewport.offsetX}px, ${viewport.offsetY}px)`,
             willChange: 'transform',
