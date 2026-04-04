@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { useCanvasStore } from '../store/canvasStore';
 import { Card } from './Card';
 import { ResetButton } from './ResetButton';
@@ -9,6 +9,7 @@ export function Canvas() {
   const { cards, viewport, loadFromCookie, pan, draggedCardId } = useCanvasStore();
   const isPanning = useRef(false);
   const lastPos = useRef({ x: 0, y: 0 });
+  const [panCount, setPanCount] = useState(0);
 
   useEffect(() => {
     loadFromCookie();
@@ -40,6 +41,7 @@ export function Canvas() {
   const handleCanvasMouseDown = (e: React.MouseEvent) => {
     isPanning.current = true;
     lastPos.current = { x: e.clientX, y: e.clientY };
+    setPanCount((c) => c + 1);
     e.preventDefault();
   };
 
@@ -69,11 +71,13 @@ export function Canvas() {
         </div>
       </div>
 
-      <div className="fixed top-4 left-4 bg-dracula-bg-light/80 backdrop-blur-sm px-3 py-2 rounded-lg shadow-lg border border-dracula-comment/30">
-        <p className="text-xs text-dracula-foreground/80">
-          Drag canvas to pan
-        </p>
-      </div>
+      {panCount < 3 && (
+        <div className="fixed top-4 left-4 bg-dracula-bg-light/80 backdrop-blur-sm px-3 py-2 rounded-lg shadow-lg border border-dracula-comment/30">
+          <p className="text-xs text-dracula-foreground/80">
+            Drag canvas to pan
+          </p>
+        </div>
+      )}
 
       <div className="fixed bottom-4 left-4 text-xs text-dracula-comment/60">
         © 2026 Jonna Matthiesen — <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer" className="underline hover:text-dracula-foreground/80">CC BY 4.0</a>
