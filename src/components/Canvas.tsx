@@ -10,10 +10,15 @@ export function Canvas() {
   const isPanning = useRef(false);
   const lastPos = useRef({ x: 0, y: 0 });
   const [panCount, setPanCount] = useState(0);
+  const [showHint, setShowHint] = useState(false);
 
   useEffect(() => {
     loadFromCookie();
   }, [loadFromCookie]);
+
+  useEffect(() => {
+    setShowHint(panCount < 3);
+  }, [panCount]);
 
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
@@ -65,10 +70,10 @@ export function Canvas() {
   };
 
   return (
-    <div className="w-screen h-screen overflow-hidden bg-dracula-bg">
+    <div className="w-screen h-screen overflow-hidden bg-dracula-bg-dark canvas-grid">
         <div
           ref={canvasRef}
-          className={`absolute inset-0 canvas-grid bg-dracula-bg-dark ${
+          className={`absolute inset-0 ${
             isPanning.current ? 'cursor-grabbing' : 'cursor-grab'
           }`}
           onMouseDown={handleCanvasMouseDown}
@@ -92,7 +97,7 @@ export function Canvas() {
         </div>
       </div>
 
-      {panCount < 3 && (
+      {showHint && (
         <div className="fixed top-4 left-4 bg-dracula-bg-light/80 backdrop-blur-sm px-3 py-2 rounded-lg shadow-lg border border-dracula-comment/30">
           <p className="text-xs text-dracula-foreground/80">
             Drag canvas to pan
@@ -100,7 +105,7 @@ export function Canvas() {
         </div>
       )}
 
-      <div className="fixed bottom-4 left-4 text-xs text-dracula-comment/60">
+      <div className="fixed bottom-3 md:bottom-4 left-3 md:left-4 text-xs text-dracula-comment/60">
         © 2026 Jonna Matthiesen — <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer" className="underline hover:text-dracula-foreground/80">CC BY 4.0</a>
       </div>
 
