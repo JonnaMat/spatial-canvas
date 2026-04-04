@@ -7,7 +7,7 @@ const COOKIE_EXPIRY = 30;
 
 interface CanvasStore {
   cards: CardData[];
-  viewport: { offsetX: number; offsetY: number };
+  viewport: { offsetX: number; offsetY: number; scale: number };
   draggedCardId: string | null;
   maxZIndex: number;
   loadFromCookie: () => void;
@@ -18,6 +18,7 @@ interface CanvasStore {
   finalizeDrag: (cardId: string) => void;
   setDragging: (cardId: string | null) => void;
   pan: (deltaX: number, deltaY: number) => void;
+  zoom: (delta: number, mouseX?: number, mouseY?: number) => void;
   reset: () => void;
 }
 
@@ -89,10 +90,38 @@ export const useCanvasStore = create<CanvasStore>((set, get) => ({
     const { viewport } = get();
     set({
       viewport: {
+        ...viewport,
         offsetX: viewport.offsetX + deltaX,
         offsetY: viewport.offsetY + deltaY,
       },
     });
+  },
+
+  zoom: (delta: number, mouseX?: number, mouseY?: number) => {
+    const { viewport } = get();
+    const oldScale = viewport.scale;
+    const newScale = Math.min(Math.max(oldScale + delta, 0.5), 2);
+    
+    if (mouseX !== undefined && mouseY !== undefined) {
+      const canvasX = (mouseX - viewport.offsetX) / oldScale;
+      const canvasY = (mouseY - viewport.offsetY) / oldScale;
+      const newOffsetX = mouseX - canvasX * newScale;
+      const newOffsetY = mouseY - canvasY * newScale;
+      set({
+        viewport: {
+          offsetX: newOffsetX,
+          offsetY: newOffsetY,
+          scale: newScale,
+        },
+      });
+    } else {
+      set({
+        viewport: {
+          ...viewport,
+          scale: newScale,
+        },
+      });
+    }
   },
 
   reset: () => {

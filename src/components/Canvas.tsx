@@ -6,7 +6,7 @@ import { ViewportIndicators } from './ViewportIndicators';
 
 export function Canvas() {
   const canvasRef = useRef<HTMLDivElement>(null);
-  const { cards, viewport, loadFromCookie, pan, draggedCardId } = useCanvasStore();
+  const { cards, viewport, loadFromCookie, pan, zoom, draggedCardId } = useCanvasStore();
   const isPanning = useRef(false);
   const lastPos = useRef({ x: 0, y: 0 });
   const [panCount, setPanCount] = useState(0);
@@ -14,6 +14,25 @@ export function Canvas() {
   useEffect(() => {
     loadFromCookie();
   }, [loadFromCookie]);
+
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? -0.1 : 0.1;
+      zoom(delta, e.clientX, e.clientY);
+    };
+
+    const canvasEl = canvasRef.current;
+    if (canvasEl) {
+      canvasEl.addEventListener('wheel', handleWheel, { passive: false });
+    }
+
+    return () => {
+      if (canvasEl) {
+        canvasEl.removeEventListener('wheel', handleWheel);
+      }
+    };
+  }, [zoom]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -57,8 +76,10 @@ export function Canvas() {
           <div
             className="relative w-[1400px] h-[900px]"
           style={{
-            transform: `translate(${viewport.offsetX}px, ${viewport.offsetY}px)`,
+            transform: `translate3d(${viewport.offsetX}px, ${viewport.offsetY}px, 0) scale(${viewport.scale})`,
             willChange: 'transform',
+            transformOrigin: '0 0',
+            shapeRendering: 'geometricPrecision',
           }}
         >
           {cards.map((card) => (

@@ -10,6 +10,7 @@ export function useCardDrag(cardId: string) {
   const startOffset = useRef({ x: 0, y: 0 });
 
   const card = useCanvasStore((s) => s.cards.find((c) => c.id === cardId));
+  const viewport = useCanvasStore((s) => s.viewport);
   const { updateCardPosition, finalizeDrag, setDragging, bringToFront } =
     useCanvasStore();
 
@@ -19,9 +20,12 @@ export function useCardDrag(cardId: string) {
       e.stopPropagation();
       e.preventDefault();
 
+      const { offsetX, offsetY, scale } = viewport;
+      const cardScreenX = card.x * scale + offsetX;
+      const cardScreenY = card.y * scale + offsetY;
       startOffset.current = {
-        x: e.clientX - card.x,
-        y: e.clientY - card.y,
+        x: e.clientX - cardScreenX,
+        y: e.clientY - cardScreenY,
       };
       hasMoved.current = false;
       setVisualPos({ x: card.x, y: card.y });
@@ -29,15 +33,18 @@ export function useCardDrag(cardId: string) {
       setDragging(cardId);
       bringToFront(cardId);
     },
-    [card, cardId, setDragging, bringToFront]
+    [card, cardId, setDragging, bringToFront, viewport]
   );
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!isDragging) return;
 
-      const newX = e.clientX - startOffset.current.x;
-      const newY = e.clientY - startOffset.current.y;
+      const { offsetX, offsetY, scale } = viewport;
+      const screenX = e.clientX - startOffset.current.x;
+      const screenY = e.clientY - startOffset.current.y;
+      const newX = (screenX - offsetX) / scale;
+      const newY = (screenY - offsetY) / scale;
       setVisualPos({ x: newX, y: newY });
 
       if (
@@ -67,7 +74,7 @@ export function useCardDrag(cardId: string) {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [isDragging, card, cardId, visualPos, setDragging, updateCardPosition, finalizeDrag]);
+  }, [isDragging, card, cardId, visualPos, setDragging, updateCardPosition, finalizeDrag, viewport]);
 
   const currentPos = isDragging ? visualPos : { x: card?.x ?? 0, y: card?.y ?? 0 };
 

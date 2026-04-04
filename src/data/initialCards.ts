@@ -12,6 +12,7 @@ export interface CardData {
 export interface Viewport {
   offsetX: number;
   offsetY: number;
+  scale: number;
 }
 
 export interface CanvasState {
@@ -107,6 +108,7 @@ export const DEFAULT_CARDS: CardData[] = [
 export const DEFAULT_VIEWPORT: Viewport = {
   offsetX: 0,
   offsetY: 0,
+  scale: 1,
 };
 
 export const MAX_Z_INDEX = 1000;

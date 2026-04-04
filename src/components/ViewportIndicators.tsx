@@ -12,14 +12,14 @@ export function ViewportIndicators() {
 
     const W = window.innerWidth;
     const H = window.innerHeight;
-    const { offsetX, offsetY } = viewport;
+    const { offsetX, offsetY, scale } = viewport;
 
     const result: string[] = [];
 
-    const hasLeft = cards.some(card => card.x + offsetX < 0);
-    const hasRight = cards.some(card => card.x + CARD_WIDTH + offsetX > W);
-    const hasTop = cards.some(card => card.y + offsetY < 0);
-    const hasBottom = cards.some(card => card.y + CARD_HEIGHT + offsetY > H);
+    const hasLeft = cards.some(card => card.x * scale + offsetX < 0);
+    const hasRight = cards.some(card => (card.x + CARD_WIDTH) * scale + offsetX > W);
+    const hasTop = cards.some(card => card.y * scale + offsetY < 0);
+    const hasBottom = cards.some(card => (card.y + CARD_HEIGHT) * scale + offsetY > H);
 
     if (hasLeft) result.push('left');
     if (hasRight) result.push('right');
@@ -27,7 +27,7 @@ export function ViewportIndicators() {
     if (hasBottom) result.push('bottom');
 
     return result;
-  }, [viewport.offsetX, viewport.offsetY, cards]);
+  }, [viewport.offsetX, viewport.offsetY, viewport.scale, cards]);
 
   if (edges.length === 0) return null;
 
